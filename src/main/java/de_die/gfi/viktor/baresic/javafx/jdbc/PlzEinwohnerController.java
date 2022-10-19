@@ -134,7 +134,7 @@ public class PlzEinwohnerController{
 		}
 		String[] quadratkilometerDoubleString=new String [2];
 		
-		quadratkilometerDoubleString[0]=quadratkilometer.substring(0, kommaPunkt-1);
+		quadratkilometerDoubleString[0]=quadratkilometer.substring(0, kommaPunkt);
 		quadratkilometerDoubleString[1]=quadratkilometer.substring(kommaPunkt+1);
 		double flaeche=0.0;
 		for(int j=0;j<quadratkilometerDoubleString[0].length();j++) {
