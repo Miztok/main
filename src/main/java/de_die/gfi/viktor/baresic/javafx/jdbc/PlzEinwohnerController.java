@@ -22,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class PlzEinwohnerController{
+	int bevoelkerungAnOrtOderPlz=0;
+	double flaecheVonOrtPlzsOderPlz=0.0;
 	List<PlzEinwohnerEintrag>listeDerEinwohnerproPlz=new ArrayList<PlzEinwohnerEintrag>();
 	@FXML
     private TextField tfPLZOrt;
@@ -72,38 +74,50 @@ public class PlzEinwohnerController{
 
     @FXML
     void handleButtonOK(ActionEvent event) throws IOException, SQLException {
-    	Connection c = verbindungAufmachen();
-		plzOderOrtDatenAusdruecken(c);
+		plzOderOrtDatenAusdruecken();
     }
-	private void plzOderOrtDatenAusdruecken(Connection c) throws SQLException {
-		int bevoelkerungAnOrtOderPlz=0;
-		double flaecheVonOrtPlzsOderPlz=0.0;
+    
+	private void plzOderOrtDatenAusdruecken() {
 		if(checkBoxPLZAnzeigen.isSelected()) {
-    		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
-    			if(listeDerEinwohnerproPlz.get(i).plz.equals(tfPLZOrt.getText())) {
-    				bevoelkerungAnOrtOderPlz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(bevoelkerungAnOrtOderPlz, i);
-    				flaecheVonOrtPlzsOderPlz+=parseStringIntoDouble(listeDerEinwohnerproPlz.get(i).quadratkilometer);
-    			}else {
-    				continue;
-    			}
-    		}
+    		eintragFuerPLZBekommenAusdruckenUndBevoelkerungUndFlaecheBerechnen();
     	}else {
-    		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
-    			if(listeDerEinwohnerproPlz.get(i).ort.equals(tfPLZOrt.getText())) {
-    				bevoelkerungAnOrtOderPlz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(bevoelkerungAnOrtOderPlz, i);
-    				flaecheVonOrtPlzsOderPlz+=parseStringIntoDouble(listeDerEinwohnerproPlz.get(i).quadratkilometer);
-    			}else {
-    				continue;
-    			}
-    		}
+    		eintraegeFuerOrtBekommenAusdruckenUndBevoelkerungUndFlaecheBerechnen();
     	}
 		labeslsSetzen(bevoelkerungAnOrtOderPlz, flaecheVonOrtPlzsOderPlz);
+		bevoelkerungAnOrtOderPlz=0;
+		flaecheVonOrtPlzsOderPlz=0.0;
 	}
+	private void eintragFuerPLZBekommenAusdruckenUndBevoelkerungUndFlaecheBerechnen() {
+		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
+			if(listeDerEinwohnerproPlz.get(i).plz.equals(tfPLZOrt.getText())) {
+				zugehoerigeEintraegeAusdruckenUndBevoelkuerungUndFlaecheAddieren(i);
+			}else {
+				continue;
+			}
+		}
+	}
+	private void eintraegeFuerOrtBekommenAusdruckenUndBevoelkerungUndFlaecheBerechnen() {
+		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
+			if(listeDerEinwohnerproPlz.get(i).ort.equals(tfPLZOrt.getText())) {
+				zugehoerigeEintraegeAusdruckenUndBevoelkuerungUndFlaecheAddieren(i);
+			}else {
+				continue;
+			}
+		}
+	}
+	
+	private void zugehoerigeEintraegeAusdruckenUndBevoelkuerungUndFlaecheAddieren(int i) {
+		bevoelkerungAnOrtOderPlz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(bevoelkerungAnOrtOderPlz, i);
+		flaecheVonOrtPlzsOderPlz+=parseStringIntoDouble(listeDerEinwohnerproPlz.get(i).quadratkilometer);
+	}
+	
 	private void labeslsSetzen(int bevoelkerungAnOrtOderPlz, double flaecheVonOrtPlzsOderPlz) {
 		labelBevoelkerung.setText(""+bevoelkerungAnOrtOderPlz);
 		labelFlaeche.setText(""+flaecheVonOrtPlzsOderPlz);
 		labelBevoelkerungsdichte.setText(""+((bevoelkerungAnOrtOderPlz*1.0)/flaecheVonOrtPlzsOderPlz));
+		
 	}
+	
 	private int zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(int bevoelkerungAnOrtOderPlz, int i) {
 		System.out.println(listeDerEinwohnerproPlz.get(i).toString());
 		bevoelkerungAnOrtOderPlz+=parseStringIntoInteger(listeDerEinwohnerproPlz.get(i).einwohner);
@@ -125,6 +139,7 @@ public class PlzEinwohnerController{
 		}
 		return flaeche;
 	}
+	
 	private int kommaStelleBerechnen(String quadratkilometer, int kommaPunkt) {
 		for (int i=0;i<quadratkilometer.length();i++) {
 			if(quadratkilometer.charAt(i)=='.') {
@@ -134,6 +149,7 @@ public class PlzEinwohnerController{
 		}
 		return kommaPunkt;
 	}
+	
 	private int parseStringIntoInteger(String einwohner) {
 		int laenge=einwohner.length();
 		int zahl=0;
@@ -142,6 +158,7 @@ public class PlzEinwohnerController{
 		}
 		return zahl;   
 	}
+	
 	private Connection verbindungAufmachen() throws SQLException {
 		Connection c = DriverManager.getConnection(
 
