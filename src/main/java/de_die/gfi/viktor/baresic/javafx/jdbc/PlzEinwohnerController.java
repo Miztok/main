@@ -50,8 +50,6 @@ public class PlzEinwohnerController {
 	@FXML
 	private Label labelPlzOrt;
 
-	@FXML
-	private CheckBox checkBoxPLZSuchen;
 	
 	@FXML
     private TableView<PlzEinwohnerEintrag> tableviewPlzOrtEinwohnerFlaeche;
@@ -101,18 +99,32 @@ public class PlzEinwohnerController {
 		bevoelkerungAnOrtOderPlz = 0;
 		flaecheVonOrtPlzsOderPlz = 0.0;
 		ort = "";
-		if (checkBoxPLZSuchen.isSelected()) {
-			plzDatenBekommenUndAusdrucken();
+		String sucheZeichenAbfolge=tfPLZOrt.getText();
+		boolean suchtNachPlz=untersuchenObNachOrtOderPlzEintraegengesucht(sucheZeichenAbfolge);
+		if (suchtNachPlz) {
+			plzDatenBekommenUndAusdrucken(sucheZeichenAbfolge);
 		} else {
-			ortDatenBekommenUndAusdrucken();
+			ortDatenBekommenUndAusdrucken(sucheZeichenAbfolge);
 		}
 		labelsSetzen(bevoelkerungAnOrtOderPlz, flaecheVonOrtPlzsOderPlz, ort);
 	}
 
-	private void ortDatenBekommenUndAusdrucken() {
+	private boolean untersuchenObNachOrtOderPlzEintraegengesucht(String sucheZeichenAbfolge) {
+		for(int i=0;i<5;i++) {
+			if(sucheZeichenAbfolge.charAt(i)>47&&sucheZeichenAbfolge.charAt(i)<58) {
+				continue;
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void ortDatenBekommenUndAusdrucken(String sucheZeichenAbfolge) {
 		list.clear();
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
-			if (listeDerEinwohnerproPlz.get(i).ort.equals(tfPLZOrt.getText())) {
+			if (listeDerEinwohnerproPlz.get(i).ort.equals(sucheZeichenAbfolge)) {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
@@ -128,10 +140,10 @@ public class PlzEinwohnerController {
 		ort = tfPLZOrt.getText();
 	}
 
-	private void plzDatenBekommenUndAusdrucken() {
+	private void plzDatenBekommenUndAusdrucken(String sucheZeichenAbfolge) {
 		list.clear();
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
-			if (listeDerEinwohnerproPlz.get(i).plz.equals(tfPLZOrt.getText())) {
+			if (listeDerEinwohnerproPlz.get(i).plz.equals(sucheZeichenAbfolge)) {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
