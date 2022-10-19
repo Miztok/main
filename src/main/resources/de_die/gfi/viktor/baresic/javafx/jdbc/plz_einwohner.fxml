@@ -14,8 +14,8 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <CheckBox fx:id="checkBoxPLZAnzeigen" layoutX="354.0" layoutY="78.0" mnemonicParsing="false" text="PLZ anzeigen" />
-      <Button fx:id="buttonOK" layoutX="202.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonOK" text="OK" />
+      <CheckBox fx:id="checkBoxPLZSuchen" layoutX="354.0" layoutY="78.0" mnemonicParsing="false" text="PLZ suchen" />
+      <Button fx:id="buttonSearchPlacsOrPostalNumbers" layoutX="202.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonSearchPlacesOrPostalNumbers" text="Ort- oder PLZ-Einträge suchen" />
       <Button fx:id="buttonClose" layoutX="549.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonClose" text="Schliessen" />
       <TextField fx:id="tfPLZOrt" layoutX="326.0" layoutY="188.0" />
       <Label layoutX="45.0" layoutY="252.0" text="Bevölkerung:" />
