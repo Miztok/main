@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 public class PlzEinwohnerController{
 	int bevoelkerungAnOrtOderPlz=0;
 	double flaecheVonOrtPlzsOderPlz=0.0;
-	List<PlzEinwohnerEintrag>listeDerEinwohnerproPlz=new ArrayList<PlzEinwohnerEintrag>();
+	static List<PlzEinwohnerEintrag>listeDerEinwohnerproPlz=new ArrayList<PlzEinwohnerEintrag>();
 	@FXML
     private TextField tfPLZOrt;
 	@FXML
@@ -72,8 +72,6 @@ public class PlzEinwohnerController{
 
     @FXML
     void handleButtonOK(ActionEvent event) throws IOException, SQLException {
-    	Connection c=verbindungAufmachen();
-    	listeDerEinwohnerproPlz=erzeugePlzListe(c);
 		plzOderOrtDatenAusdruecken();
     }
     
@@ -161,7 +159,7 @@ public class PlzEinwohnerController{
 		return zahl;   
 	}
 	
-	private Connection verbindungAufmachen() throws SQLException {
+	private static Connection verbindungAufmachen() throws SQLException {
 		Connection c = DriverManager.getConnection(
 
 					"jdbc:mariadb://localhost:3019/newdatabase2",
@@ -180,7 +178,8 @@ public static void showDialog() throws IOException, SQLException {
         Parent parent = fxmlLoader.load();
         
         PlzEinwohnerController ctrl=fxmlLoader.getController();
-        
+        Connection c=verbindungAufmachen();
+    	listeDerEinwohnerproPlz=ctrl.erzeugePlzListe(c);
         ctrl=fxmlLoader.getController();
         
         ctrl.setStage(stage);
