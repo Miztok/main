@@ -83,7 +83,7 @@ public class PlzEinwohnerController {
 			String ort = resultSet.getString("ort");
 			String einwohner = resultSet.getString("einwohner");
 			String quadratkilometer = resultSet.getString("quadratkilometer");
-			liste.add(new PlzEinwohnerEintrag(plz, ort, einwohner, quadratkilometer));
+			liste.add(new PlzEinwohnerEintrag( ort, plz, einwohner, quadratkilometer));
 		}
 
 		System.out.println("Index 0 - 10: " + liste.subList(0, 10));
@@ -106,16 +106,21 @@ public class PlzEinwohnerController {
 		} else {
 			ortDatenBekommenUndAusdrucken();
 		}
-		labeslsSetzen(bevoelkerungAnOrtOderPlz, flaecheVonOrtPlzsOderPlz, ort);
+		labelsSetzen(bevoelkerungAnOrtOderPlz, flaecheVonOrtPlzsOderPlz, ort);
 	}
 
 	private void ortDatenBekommenUndAusdrucken() {
+		list.clear();
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
 			if (listeDerEinwohnerproPlz.get(i).ort.equals(tfPLZOrt.getText())) {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
 				flaecheVonOrtPlzsOderPlz += Double.valueOf(listeDerEinwohnerproPlz.get(i).quadratkilometer);
+				PlzEinwohnerEintrag eintragVonPlzDaten=new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
+						listeDerEinwohnerproPlz.get(i).plz, listeDerEinwohnerproPlz.get(i).einwohner,
+						listeDerEinwohnerproPlz.get(i).quadratkilometer);
+				list.add(eintragVonPlzDaten);
 			} else {
 				continue;
 			}
@@ -124,12 +129,17 @@ public class PlzEinwohnerController {
 	}
 
 	private void plzDatenBekommenUndAusdrucken() {
+		list.clear();
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
 			if (listeDerEinwohnerproPlz.get(i).plz.equals(tfPLZOrt.getText())) {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
 				flaecheVonOrtPlzsOderPlz += Double.valueOf(listeDerEinwohnerproPlz.get(i).quadratkilometer);
+				PlzEinwohnerEintrag eintragVonPlzDaten=new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
+						listeDerEinwohnerproPlz.get(i).plz, listeDerEinwohnerproPlz.get(i).einwohner,
+						listeDerEinwohnerproPlz.get(i).quadratkilometer);
+				list.add(eintragVonPlzDaten);
 				ort = listeDerEinwohnerproPlz.get(i).ort;
 			} else {
 				continue;
@@ -137,7 +147,7 @@ public class PlzEinwohnerController {
 		}
 	}
 
-	private void labeslsSetzen(int bevoelkerungAnOrtOderPlz, double flaecheVonOrtPlzsOderPlz, String ort2) {
+	private void labelsSetzen(int bevoelkerungAnOrtOderPlz, double flaecheVonOrtPlzsOderPlz, String ort2) {
 		labelBevoelkerung.setText("" + bevoelkerungAnOrtOderPlz);
 		labelFlaeche.setText("" + flaecheVonOrtPlzsOderPlz);
 		labelBevoelkerungsdichte.setText("" + ((bevoelkerungAnOrtOderPlz * 1.0) / flaecheVonOrtPlzsOderPlz));
