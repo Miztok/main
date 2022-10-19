@@ -37,6 +37,9 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private Button buttonSearchPlacesOrPostalNumbers;
+	
+	@FXML
+    private Button buttonShowWholeTable;
 
 	@FXML
 	private Label labelBevoelkerung;
@@ -70,6 +73,17 @@ public class PlzEinwohnerController {
 	void handleButtonClose(ActionEvent event) {
 		stage.close();
 	}
+	
+	@FXML
+    void handleButtonShowWholeTable(ActionEvent event) {
+		list.clear();
+		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
+				PlzEinwohnerEintrag eintragVonPlzDaten=new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
+						listeDerEinwohnerproPlz.get(i).plz, listeDerEinwohnerproPlz.get(i).einwohner,
+						listeDerEinwohnerproPlz.get(i).quadratkilometer);
+				list.add(eintragVonPlzDaten);
+		}
+    }
 
 	private List<PlzEinwohnerEintrag> erzeugePlzListe(Connection c) throws SQLException {
 		Statement stmt = c.createStatement();
