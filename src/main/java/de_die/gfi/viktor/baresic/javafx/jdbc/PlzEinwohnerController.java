@@ -17,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -47,6 +49,21 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private CheckBox checkBoxPLZSuchen;
+	
+	@FXML
+    private TableView<?> tableviewPlzOrtEinwohnerFlaeche;
+	
+	@FXML
+    private TableColumn<?, ?> tbEinwohner;
+
+    @FXML
+    private TableColumn<?, ?> tbOrt;
+
+    @FXML
+    private TableColumn<?, ?> tbPlz;
+
+    @FXML
+    private TableColumn<?, ?> tbQuadratkilometer;
 
 	@FXML
 	void handleButtonClose(ActionEvent event) {
@@ -93,7 +110,7 @@ public class PlzEinwohnerController {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
-				flaecheVonOrtPlzsOderPlz += parseStringIntoDouble(listeDerEinwohnerproPlz.get(i).quadratkilometer);
+				flaecheVonOrtPlzsOderPlz += Double.valueOf(listeDerEinwohnerproPlz.get(i).quadratkilometer);
 			} else {
 				continue;
 			}
@@ -107,7 +124,7 @@ public class PlzEinwohnerController {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
-				flaecheVonOrtPlzsOderPlz += parseStringIntoDouble(listeDerEinwohnerproPlz.get(i).quadratkilometer);
+				flaecheVonOrtPlzsOderPlz += Double.valueOf(listeDerEinwohnerproPlz.get(i).quadratkilometer);
 				ort = listeDerEinwohnerproPlz.get(i).ort;
 			} else {
 				continue;
@@ -125,31 +142,11 @@ public class PlzEinwohnerController {
 	private int zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(String bevoelkerung, int i) {
 		System.out.println(listeDerEinwohnerproPlz.get(i).toString());
 		int bevoelkerungAnOrtOderPlz = 0;
-		bevoelkerungAnOrtOderPlz += parseStringIntoInteger(bevoelkerung);
+		bevoelkerungAnOrtOderPlz += Integer.valueOf(bevoelkerung);
 		return bevoelkerungAnOrtOderPlz;
 	}
 
-	private double parseStringIntoDouble(String quadratkilometer) {
-		int kommaPunkt = 0;
-		for (int i = 0; i < quadratkilometer.length(); i++) {
-			if (quadratkilometer.charAt(i) == '.') {
-				kommaPunkt = i;
-			}
-		}
-		String[] quadratkilometerDoubleString = new String[2];
-
-		quadratkilometerDoubleString[0] = quadratkilometer.substring(0, kommaPunkt);
-		quadratkilometerDoubleString[1] = quadratkilometer.substring(kommaPunkt + 1);
-		double flaeche = 0.0;
-		for (int j = 0; j < quadratkilometerDoubleString[0].length(); j++) {
-			flaeche += Math.pow(10.0, quadratkilometerDoubleString[0].length() - j - 1)
-					* (quadratkilometerDoubleString[0].charAt(j) - 48);
-		}
-		for (int k = 0; k < quadratkilometerDoubleString[1].length(); k++) {
-			flaeche += Math.pow(10.0, -k - 1) * (quadratkilometerDoubleString[1].charAt(k) - 48);
-		}
-		return flaeche;
-	}
+	
 
 	private int parseStringIntoInteger(String einwohner) {
 		int laenge = einwohner.length();
