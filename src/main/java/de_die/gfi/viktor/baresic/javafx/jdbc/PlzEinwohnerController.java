@@ -41,7 +41,7 @@ public class PlzEinwohnerController{
     private Label labelFlaeche;
 
     @FXML
-    private CheckBox checkBoxPLZAnzeigen;
+    private CheckBox checkBoxPLZSuchen;
 
     @FXML
     void handleButtonClose(ActionEvent event) {
@@ -66,14 +66,14 @@ public class PlzEinwohnerController{
 	}
 
     @FXML
-    void handleButtonOK(ActionEvent event) throws IOException, SQLException {
+    void handleButtonSearchPlacesOrPostalNumbers(ActionEvent event) throws IOException, SQLException {
     	Connection c = verbindungAufmachen();
 		plzOderOrtDatenAusdruecken(c);
     }
 	private void plzOderOrtDatenAusdruecken(Connection c) throws SQLException {
 		int bevoelkerungAnOrtOderPlz=0;
 		double flaecheVonOrtPlzsOderPlz=0.0;
-		if(checkBoxPLZAnzeigen.isSelected()) {
+		if(checkBoxPLZSuchen.isSelected()) {
     		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
     			if(listeDerEinwohnerproPlz.get(i).plz.equals(tfPLZOrt.getText())) {
     				bevoelkerungAnOrtOderPlz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(bevoelkerungAnOrtOderPlz, i);
@@ -143,10 +143,10 @@ public static void showDialog() throws IOException, SQLException {
         Parent parent = fxmlLoader.load();
         
         PlzEinwohnerController ctrl=fxmlLoader.getController();
-        
+       
         Connection c = verbindungAufmachen();
     	listeDerEinwohnerproPlz = ctrl.erzeugePlzListe(c);
-       
+        
         ctrl=fxmlLoader.getController();
         
         ctrl.setStage(stage);
