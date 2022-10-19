@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class PlzEinwohnerController {
@@ -51,19 +54,19 @@ public class PlzEinwohnerController {
 	private CheckBox checkBoxPLZSuchen;
 	
 	@FXML
-    private TableView<?> tableviewPlzOrtEinwohnerFlaeche;
+    private TableView<PlzEinwohnerEintrag> tableviewPlzOrtEinwohnerFlaeche;
 	
 	@FXML
-    private TableColumn<?, ?> tbEinwohner;
+    private TableColumn<PlzEinwohnerEintrag, String> tbEinwohner;
 
     @FXML
-    private TableColumn<?, ?> tbOrt;
+    private TableColumn<PlzEinwohnerEintrag, String> tbOrt;
 
     @FXML
-    private TableColumn<?, ?> tbPlz;
+    private TableColumn<PlzEinwohnerEintrag, String> tbPlz;
 
     @FXML
-    private TableColumn<?, ?> tbQuadratkilometer;
+    private TableColumn<PlzEinwohnerEintrag, String> tbQuadratkilometer;
 
 	@FXML
 	void handleButtonClose(ActionEvent event) {
@@ -91,6 +94,8 @@ public class PlzEinwohnerController {
 	void handleButtonSearchPlacesOrPostalNumbers(ActionEvent event) throws IOException {
 		plzOderOrtDatenAusdruecken();
 	}
+	
+	ObservableList<PlzEinwohnerEintrag>list;
 
 	private void plzOderOrtDatenAusdruecken() {
 		bevoelkerungAnOrtOderPlz = 0;
@@ -148,15 +153,6 @@ public class PlzEinwohnerController {
 
 	
 
-	private int parseStringIntoInteger(String einwohner) {
-		int laenge = einwohner.length();
-		int zahl = 0;
-		for (int i = 0; i < laenge; i++) {
-			zahl += Math.pow(10, laenge - i - 1) * (einwohner.charAt(i) - 48);
-		}
-		return zahl;
-	}
-
 	private static Connection verbindungAufmachen() throws SQLException {
 		Connection c = DriverManager.getConnection(
 
@@ -200,5 +196,12 @@ public class PlzEinwohnerController {
 
 	public void initialize() {
 		stage = new Stage();
+		tbOrt.setCellValueFactory(new PropertyValueFactory<>("ort"));
+		tbPlz.setCellValueFactory(new PropertyValueFactory<>("plz"));
+		tbEinwohner.setCellValueFactory(new PropertyValueFactory<>("einwohner"));
+		tbQuadratkilometer.setCellValueFactory(new PropertyValueFactory<>("quadratkilometer"));
+		list = FXCollections.observableArrayList();
+		tableviewPlzOrtEinwohnerFlaeche.setItems(list);
+		tableviewPlzOrtEinwohnerFlaeche.setPlaceholder(new Label(""));
 	}
 }
