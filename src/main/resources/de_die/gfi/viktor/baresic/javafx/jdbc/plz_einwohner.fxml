@@ -24,7 +24,7 @@
       <Label layoutX="218.0" layoutY="252.0" />
       <Label layoutX="204.0" layoutY="252.0" prefHeight="17.0" prefWidth="46.0" text="Fläche:" />
       <Label layoutX="379.0" layoutY="252.0" text="Bevölkerungsdichte:" />
-      <Label fx:id="labelFlaeche" layoutX="286.0" layoutY="261.0" text="Label" />
+      <Label fx:id="labelFlaeche" layoutX="278.0" layoutY="252.0" text="Label" />
       <Label fx:id="labelBevoelkerungsdichte" layoutX="512.0" layoutY="253.0" text="Label" />
    </children>
 </AnchorPane>
