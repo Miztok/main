@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de_die.gfi.viktor.baresic.javafx.jdbc.PlzEinwohnerController">
+   <children>
+      <Label layoutX="25.0" layoutY="29.0" text="Datenbankentabellenveranschaulichung-Orte, PLZ, Qudratkilometer und Einwohner">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="checkBoxPLZAnzeigen" layoutX="186.0" layoutY="82.0" mnemonicParsing="false" text="PLZ anzeigen" />
+      <Button fx:id="buttonOK" layoutX="112.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonOK" text="OK" />
+      <Button fx:id="buttonClose" layoutX="360.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonClose" text="Schliessen" />
+      <Button fx:id="buttonGetTable" layoutX="197.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonGetTable" text="Tabelle einfügen" />
+      <TextField fx:id="tfPLZOrt" layoutX="175.0" layoutY="188.0" />
+      <Label layoutX="45.0" layoutY="252.0" text="Bevölkerung:" />
+      <Label fx:id="labelBevoelkerung" layoutX="131.0" layoutY="252.0" text="Label" />
+      <Label layoutX="218.0" layoutY="252.0" />
+      <Label layoutX="204.0" layoutY="252.0" prefHeight="17.0" prefWidth="46.0" text="Fläche:" />
+      <Label layoutX="379.0" layoutY="252.0" text="Bevölkerungsdichte:" />
+      <Label fx:id="labelFlaeche" layoutX="286.0" layoutY="261.0" text="Label" />
+      <Label fx:id="labelBevoelkerungsdichte" layoutX="512.0" layoutY="253.0" text="Label" />
+   </children>
+</AnchorPane>
