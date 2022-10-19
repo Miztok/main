@@ -3,11 +3,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de_die.gfi.viktor.baresic.javafx.jdbc.PlzEinwohnerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de_die.gfi.viktor.baresic.javafx.jdbc.PlzEinwohnerController">
    <children>
       <Label layoutX="118.0" layoutY="24.0" text="Datenbankentabellenveranschaulichung-Orte, PLZ, Qudratkilometer und Einwohner">
          <font>
@@ -15,18 +17,26 @@
          </font>
       </Label>
       <CheckBox fx:id="checkBoxPLZSuchen" layoutX="354.0" layoutY="78.0" mnemonicParsing="false" text="PLZ suchen" />
-      <Button fx:id="buttonSearchPlacsOrPostalNumbers" layoutX="202.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonSearchPlacesOrPostalNumbers" text="Ort- oder PLZ-Einträge suchen" />
-      <Button fx:id="buttonClose" layoutX="549.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonClose" text="Schliessen" />
-      <TextField fx:id="tfPLZOrt" layoutX="326.0" layoutY="188.0" />
-      <Label layoutX="45.0" layoutY="252.0" text="Bevölkerung:" />
-      <Label fx:id="labelBevoelkerung" layoutX="186.0" layoutY="252.0" text="Label" />
+      <Button fx:id="buttonSearchPlacsOrPostalNumbers" layoutX="200.0" layoutY="527.0" mnemonicParsing="false" onAction="#handleButtonSearchPlacesOrPostalNumbers" text="Ort- oder PLZ-Einträge suchen" />
+      <Button fx:id="buttonClose" layoutX="559.0" layoutY="527.0" mnemonicParsing="false" onAction="#handleButtonClose" text="Schliessen" />
+      <TextField fx:id="tfPLZOrt" layoutX="294.0" layoutY="152.0" />
+      <Label layoutX="49.0" layoutY="439.0" text="Bevölkerung:" />
+      <Label fx:id="labelBevoelkerung" layoutX="172.0" layoutY="439.0" text="Label" />
       <Label layoutX="218.0" layoutY="252.0" />
-      <Label layoutX="262.0" layoutY="252.0" prefHeight="17.0" prefWidth="46.0" text="Fläche:" />
-      <Label layoutX="513.0" layoutY="252.0" text="Bevölkerungsdichte:" />
-      <Label fx:id="labelFlaeche" layoutX="340.0" layoutY="252.0" text="Label" />
-      <Label fx:id="labelBevoelkerungsdichte" layoutX="641.0" layoutY="252.0" text="Label" />
-      <Label layoutX="148.0" layoutY="192.0" text="PLZ- oder Orteinträge suchen:" />
-      <Label layoutX="525.0" layoutY="192.0" text="Ort der Postleitzahl:" />
-      <Label fx:id="labelPlzOrt" layoutX="655.0" layoutY="192.0" text="Label" />
+      <Label layoutX="266.0" layoutY="439.0" prefHeight="17.0" prefWidth="46.0" text="Fläche:" />
+      <Label layoutX="506.0" layoutY="439.0" text="Bevölkerungsdichte:" />
+      <Label fx:id="labelFlaeche" layoutX="354.0" layoutY="439.0" text="Label" />
+      <Label fx:id="labelBevoelkerungsdichte" layoutX="669.0" layoutY="439.0" text="Label" />
+      <Label layoutX="49.0" layoutY="156.0" text="PLZ- oder Orteinträge suchen:" />
+      <Label layoutX="515.0" layoutY="156.0" text="Ort der Postleitzahl:" />
+      <Label fx:id="labelPlzOrt" layoutX="677.0" layoutY="156.0" text="Label" />
+      <TableView fx:id="tableviewPlzOrtEinwohnerFlaeche" layoutX="118.0" layoutY="210.0" prefHeight="200.0" prefWidth="543.0">
+        <columns>
+          <TableColumn fx:id="tbOrt" prefWidth="156.0" text="Ort" />
+          <TableColumn fx:id="tbPlz" prefWidth="75.0" text="PLZ" />
+            <TableColumn fx:id="tbEinwohner" prefWidth="143.0" text="Einwohner" />
+            <TableColumn fx:id="tbQuadratkilometer" prefWidth="166.0" text="Quadratkilometer" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
