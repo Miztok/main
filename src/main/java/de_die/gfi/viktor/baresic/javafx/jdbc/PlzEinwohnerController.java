@@ -138,10 +138,10 @@ public class PlzEinwohnerController{
 		quadratkilometerDoubleString[1]=quadratkilometer.substring(kommaPunkt+1);
 		double flaeche=0.0;
 		for(int j=0;j<quadratkilometerDoubleString[0].length();j++) {
-			flaeche+=Math.pow(10.0, quadratkilometerDoubleString[0].length()-j-1)*(quadratkilometerDoubleString[0].charAt(j)-47);
+			flaeche+=Math.pow(10.0, quadratkilometerDoubleString[0].length()-j-1)*(quadratkilometerDoubleString[0].charAt(j)-48);
 		}
 		for(int k=0;k<quadratkilometerDoubleString[1].length();k++) {
-			flaeche+=Math.pow(10.0, -k)*(quadratkilometerDoubleString[1].charAt(k)-47);
+			flaeche+=Math.pow(10.0, -k-1)*(quadratkilometerDoubleString[1].charAt(k)-48);
 		}
 		return flaeche;
 	}
@@ -149,7 +149,7 @@ public class PlzEinwohnerController{
 		int laenge=einwohner.length();
 		int zahl=0;
 		for(int i=0;i<laenge;i++) {
-			zahl+=Math.pow(10, laenge-i-1)*(einwohner.charAt(i)-47);
+			zahl+=Math.pow(10, laenge-i-1)*(einwohner.charAt(i)-48);
 		}
 		return zahl;   
 	}
