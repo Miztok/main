@@ -81,7 +81,8 @@ public class PlzEinwohnerController{
 		if(checkBoxPLZAnzeigen.isSelected()) {
     		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
     			if(listeDerEinwohnerproPlz.get(i).plz.equals(tfPLZOrt.getText())) {
-    				System.out.println(listeDerEinwohnerproPlz.get(i).toString());
+    				bevoelkerungAnOrtOderPlz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(bevoelkerungAnOrtOderPlz, i);
+    				flaecheVonOrtPlzsOderPlz+=parseStringIntoDouble(listeDerEinwohnerproPlz.get(i).quadratkilometer);
     			}else {
     				continue;
     			}
@@ -89,14 +90,56 @@ public class PlzEinwohnerController{
     	}else {
     		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
     			if(listeDerEinwohnerproPlz.get(i).ort.equals(tfPLZOrt.getText())) {
-    				System.out.println(listeDerEinwohnerproPlz.get(i).toString());
+    				bevoelkerungAnOrtOderPlz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(bevoelkerungAnOrtOderPlz, i);
+    				flaecheVonOrtPlzsOderPlz+=parseStringIntoDouble(listeDerEinwohnerproPlz.get(i).quadratkilometer);
     			}else {
     				continue;
     			}
     		}
     	}
+		labeslsSetzen(bevoelkerungAnOrtOderPlz, flaecheVonOrtPlzsOderPlz);
+	}
+	private void labeslsSetzen(int bevoelkerungAnOrtOderPlz, double flaecheVonOrtPlzsOderPlz) {
+		labelBevoelkerung.setText(""+bevoelkerungAnOrtOderPlz);
+		labelFlaeche.setText(""+flaecheVonOrtPlzsOderPlz);
+		labelBevoelkerungsdichte.setText(""+((bevoelkerungAnOrtOderPlz*1.0)/flaecheVonOrtPlzsOderPlz));
+	}
+	private int zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(int bevoelkerungAnOrtOderPlz, int i) {
+		System.out.println(listeDerEinwohnerproPlz.get(i).toString());
+		bevoelkerungAnOrtOderPlz+=parseStringIntoInteger(listeDerEinwohnerproPlz.get(i).einwohner);
+		return bevoelkerungAnOrtOderPlz;
 	}
 
+	private double parseStringIntoDouble(String quadratkilometer) {
+		int kommaPunkt=0;
+		for (int i=0;i<quadratkilometer.length();i++) {
+			if(quadratkilometer.charAt(i)=='.') {
+				kommaPunkt=i;
+				break;
+			}
+		}
+		String[] quadratkilometerDoubleString=new String [2];
+		quadratkilometerDoubleString[0]=quadratkilometer.substring(0, kommaPunkt);
+		quadratkilometerDoubleString[1]=quadratkilometer.substring(kommaPunkt+1);
+		double zahlTeil1=0.0;
+		double zahlTeil2=0.0;
+		for(int j=0;j<quadratkilometerDoubleString[0].length();j++) {
+			zahlTeil1+=Math.pow(10, quadratkilometerDoubleString[0].length()-j-1)*(quadratkilometerDoubleString[0].charAt(j)-47);
+		}
+		for(int j=0;j<quadratkilometerDoubleString[1].length();j++) {
+			zahlTeil2+=Math.pow(10, -j-1)*(quadratkilometerDoubleString[1].charAt(j)-47);
+		}
+		double flaeche=zahlTeil1+zahlTeil2;
+		return flaeche;
+	}
+	private int parseStringIntoInteger(String einwohner) {
+		int laenge=einwohner.length();
+		int zahl=0;
+		for(int i=0;i<laenge;i++) {
+			zahl+=Math.pow(10, laenge-i-1)*(einwohner.charAt(i)-47);
+		}
+		return zahl;   
+	}
 	private Connection verbindungAufmachen() throws SQLException {
 		Connection c = DriverManager.getConnection(
 
