@@ -27,9 +27,15 @@ import javafx.stage.Stage;
 
 public class PlzEinwohnerController {
 	static List<PlzEinwohnerEintrag> listeDerEinwohnerproPlz = new ArrayList<>();
+
 	int bevoelkerungAnOrtOderPlz = 0;
+
 	double flaecheVonOrtPlzsOderPlz = 0.0;
+
 	String ort = "";
+
+	ObservableList<PlzEinwohnerEintrag> suchErgebnissenListe;
+
 	@FXML
 	private TextField tfPLZOrt;
 	@FXML
@@ -37,9 +43,9 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private Button buttonSearchPlacesOrPostalNumbers;
-	
+
 	@FXML
-    private Button buttonShowWholeTable;
+	private Button buttonShowWholeTable;
 
 	@FXML
 	private Label labelBevoelkerung;
@@ -53,37 +59,36 @@ public class PlzEinwohnerController {
 	@FXML
 	private Label labelPlzOrt;
 
-	
 	@FXML
-    private TableView<PlzEinwohnerEintrag> tableviewPlzOrtEinwohnerFlaeche;
-	
+	private TableView<PlzEinwohnerEintrag> tableviewPlzOrtEinwohnerFlaeche;
+
 	@FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbcEinwohner;
+	private TableColumn<PlzEinwohnerEintrag, String> tbcEinwohner;
 
-    @FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbcOrt;
+	@FXML
+	private TableColumn<PlzEinwohnerEintrag, String> tbcOrt;
 
-    @FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbcPlz;
+	@FXML
+	private TableColumn<PlzEinwohnerEintrag, String> tbcPlz;
 
-    @FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbcQuadratkilometer;
+	@FXML
+	private TableColumn<PlzEinwohnerEintrag, String> tbcQuadratkilometer;
 
 	@FXML
 	void handleButtonClose(ActionEvent event) {
 		stage.close();
 	}
-	
+
 	@FXML
-    void handleButtonShowWholeTable(ActionEvent event) {
-		list.clear();
+	void handleButtonShowWholeTable(ActionEvent event) {
+		suchErgebnissenListe.clear();
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
-				PlzEinwohnerEintrag eintragVonPlzDaten=new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
-						listeDerEinwohnerproPlz.get(i).plz, listeDerEinwohnerproPlz.get(i).einwohner,
-						listeDerEinwohnerproPlz.get(i).quadratkilometer);
-				list.add(eintragVonPlzDaten);
+			PlzEinwohnerEintrag eintragVonPlzDaten = new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
+					listeDerEinwohnerproPlz.get(i).plz, listeDerEinwohnerproPlz.get(i).einwohner,
+					listeDerEinwohnerproPlz.get(i).quadratkilometer);
+			suchErgebnissenListe.add(eintragVonPlzDaten);
 		}
-    }
+	}
 
 	private List<PlzEinwohnerEintrag> erzeugePlzListe(Connection c) throws SQLException {
 		Statement stmt = c.createStatement();
@@ -95,7 +100,7 @@ public class PlzEinwohnerController {
 			String ort = resultSet.getString("ort");
 			String einwohner = resultSet.getString("einwohner");
 			String quadratkilometer = resultSet.getString("quadratkilometer");
-			liste.add(new PlzEinwohnerEintrag( ort, plz, einwohner, quadratkilometer));
+			liste.add(new PlzEinwohnerEintrag(ort, plz, einwohner, quadratkilometer));
 		}
 
 		System.out.println("Index 0 - 10: " + liste.subList(0, 10));
@@ -106,15 +111,13 @@ public class PlzEinwohnerController {
 	void handleButtonSearchPlacesOrPostalNumbers(ActionEvent event) throws IOException {
 		plzOderOrtDatenAusdruecken();
 	}
-	
-	ObservableList<PlzEinwohnerEintrag>list;
 
 	private void plzOderOrtDatenAusdruecken() {
 		bevoelkerungAnOrtOderPlz = 0;
 		flaecheVonOrtPlzsOderPlz = 0.0;
 		ort = "";
-		String sucheZeichenAbfolge=tfPLZOrt.getText();
-		boolean suchtNachPlz=untersuchenObNachOrtOderPlzEintraegengesucht(sucheZeichenAbfolge);
+		String sucheZeichenAbfolge = tfPLZOrt.getText();
+		boolean suchtNachPlz = untersuchenObNachOrtOderPlzEintraegengesucht(sucheZeichenAbfolge);
 		if (suchtNachPlz) {
 			plzDatenBekommenUndAusdrucken(sucheZeichenAbfolge);
 		} else {
@@ -124,11 +127,10 @@ public class PlzEinwohnerController {
 	}
 
 	private boolean untersuchenObNachOrtOderPlzEintraegengesucht(String sucheZeichenAbfolge) {
-		for(int i=0;i<5;i++) {
-			if(sucheZeichenAbfolge.charAt(i)>47&&sucheZeichenAbfolge.charAt(i)<58) {
+		for (int i = 0; i < 5; i++) {
+			if (sucheZeichenAbfolge.charAt(i) > 47 && sucheZeichenAbfolge.charAt(i) < 58) {
 				continue;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}
@@ -136,17 +138,17 @@ public class PlzEinwohnerController {
 	}
 
 	private void ortDatenBekommenUndAusdrucken(String sucheZeichenAbfolge) {
-		list.clear();
+		suchErgebnissenListe.clear();
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
 			if (listeDerEinwohnerproPlz.get(i).ort.equals(sucheZeichenAbfolge)) {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
 				flaecheVonOrtPlzsOderPlz += Double.valueOf(listeDerEinwohnerproPlz.get(i).quadratkilometer);
-				PlzEinwohnerEintrag eintragVonPlzDaten=new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
+				PlzEinwohnerEintrag eintragVonPlzDaten = new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
 						listeDerEinwohnerproPlz.get(i).plz, listeDerEinwohnerproPlz.get(i).einwohner,
 						listeDerEinwohnerproPlz.get(i).quadratkilometer);
-				list.add(eintragVonPlzDaten);
+				suchErgebnissenListe.add(eintragVonPlzDaten);
 			} else {
 				continue;
 			}
@@ -155,17 +157,17 @@ public class PlzEinwohnerController {
 	}
 
 	private void plzDatenBekommenUndAusdrucken(String sucheZeichenAbfolge) {
-		list.clear();
+		suchErgebnissenListe.clear();
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
 			if (listeDerEinwohnerproPlz.get(i).plz.equals(sucheZeichenAbfolge)) {
 				int bevoelkerungplz = zugehoerigeEintraegeAusdruckenUndBevoelkerungAddieren(
 						listeDerEinwohnerproPlz.get(i).einwohner, i);
 				bevoelkerungAnOrtOderPlz += bevoelkerungplz;
 				flaecheVonOrtPlzsOderPlz += Double.valueOf(listeDerEinwohnerproPlz.get(i).quadratkilometer);
-				PlzEinwohnerEintrag eintragVonPlzDaten=new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
+				PlzEinwohnerEintrag eintragVonPlzDaten = new PlzEinwohnerEintrag(listeDerEinwohnerproPlz.get(i).ort,
 						listeDerEinwohnerproPlz.get(i).plz, listeDerEinwohnerproPlz.get(i).einwohner,
 						listeDerEinwohnerproPlz.get(i).quadratkilometer);
-				list.add(eintragVonPlzDaten);
+				suchErgebnissenListe.add(eintragVonPlzDaten);
 				ort = listeDerEinwohnerproPlz.get(i).ort;
 			} else {
 				continue;
@@ -186,8 +188,6 @@ public class PlzEinwohnerController {
 		bevoelkerungAnOrtOderPlz += Integer.valueOf(bevoelkerung);
 		return bevoelkerungAnOrtOderPlz;
 	}
-
-	
 
 	private static Connection verbindungAufmachen() throws SQLException {
 		Connection c = DriverManager.getConnection(
@@ -236,8 +236,8 @@ public class PlzEinwohnerController {
 		tbcPlz.setCellValueFactory(new PropertyValueFactory<>("plz"));
 		tbcEinwohner.setCellValueFactory(new PropertyValueFactory<>("einwohner"));
 		tbcQuadratkilometer.setCellValueFactory(new PropertyValueFactory<>("quadratkilometer"));
-		list = FXCollections.observableArrayList();
-		tableviewPlzOrtEinwohnerFlaeche.setItems(list);
+		suchErgebnissenListe = FXCollections.observableArrayList();
+		tableviewPlzOrtEinwohnerFlaeche.setItems(suchErgebnissenListe);
 		tableviewPlzOrtEinwohnerFlaeche.setPlaceholder(new Label(""));
 	}
 }
