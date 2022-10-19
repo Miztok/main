@@ -37,6 +37,19 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private TextField tfPLZOrt;
+	
+	@FXML
+    private TextField tfEinwohnerEintragHinzufuegung;
+
+    @FXML
+    private TextField tfFlaechenEintragHinzufuegung;
+
+    @FXML
+    private TextField tfOrtEintragHinzufuegung;
+    
+    @FXML
+    private TextField tfPlzEintragHinzufuegung;
+    
 	@FXML
 	private Button buttonClose;
 
@@ -45,6 +58,22 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private Button buttonShowWholeTable;
+	
+	@FXML
+    private Button buttonEintragHinzufuegen;
+
+    @FXML
+    private Button buttonEintragLoeschen;
+    
+    @FXML
+    void handleButtonEintragHinzufuegen(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleButtonEintragLoeschen(ActionEvent event) {
+
+    }
 
 	@FXML
 	private Label labelBevoelkerung;
