@@ -57,16 +57,16 @@ public class PlzEinwohnerController {
     private TableView<PlzEinwohnerEintrag> tableviewPlzOrtEinwohnerFlaeche;
 	
 	@FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbEinwohner;
+    private TableColumn<PlzEinwohnerEintrag, String> tbcEinwohner;
 
     @FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbOrt;
+    private TableColumn<PlzEinwohnerEintrag, String> tbcOrt;
 
     @FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbPlz;
+    private TableColumn<PlzEinwohnerEintrag, String> tbcPlz;
 
     @FXML
-    private TableColumn<PlzEinwohnerEintrag, String> tbQuadratkilometer;
+    private TableColumn<PlzEinwohnerEintrag, String> tbcQuadratkilometer;
 
 	@FXML
 	void handleButtonClose(ActionEvent event) {
@@ -206,10 +206,10 @@ public class PlzEinwohnerController {
 
 	public void initialize() {
 		stage = new Stage();
-		tbOrt.setCellValueFactory(new PropertyValueFactory<>("ort"));
-		tbPlz.setCellValueFactory(new PropertyValueFactory<>("plz"));
-		tbEinwohner.setCellValueFactory(new PropertyValueFactory<>("einwohner"));
-		tbQuadratkilometer.setCellValueFactory(new PropertyValueFactory<>("quadratkilometer"));
+		tbcOrt.setCellValueFactory(new PropertyValueFactory<>("ort"));
+		tbcPlz.setCellValueFactory(new PropertyValueFactory<>("plz"));
+		tbcEinwohner.setCellValueFactory(new PropertyValueFactory<>("einwohner"));
+		tbcQuadratkilometer.setCellValueFactory(new PropertyValueFactory<>("quadratkilometer"));
 		list = FXCollections.observableArrayList();
 		tableviewPlzOrtEinwohnerFlaeche.setItems(list);
 		tableviewPlzOrtEinwohnerFlaeche.setPlaceholder(new Label(""));
