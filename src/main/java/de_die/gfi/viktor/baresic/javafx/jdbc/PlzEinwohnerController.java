@@ -41,6 +41,9 @@ public class PlzEinwohnerController{
 
     @FXML
     private Label labelFlaeche;
+    
+    @FXML
+    private Label labelPlzOrt;
 
     @FXML
     private CheckBox checkBoxPLZAnzeigen;
@@ -49,12 +52,7 @@ public class PlzEinwohnerController{
     void handleButtonClose(ActionEvent event) {
     	stage.close();
     }
-    @FXML
-    void handleButtonGetTable(ActionEvent event) throws SQLException {
-    	Connection c = verbindungAufmachen();
-    	listeDerEinwohnerproPlz = erzeugePlzListe(c);
-    	
-    }
+    
 	private List<PlzEinwohnerEintrag> erzeugePlzListe(Connection c) throws SQLException {
 		Statement stmt=c.createStatement();
     	ResultSet resultSet = stmt.executeQuery("SELECT * FROM plz_einwohner");  	
@@ -74,6 +72,8 @@ public class PlzEinwohnerController{
 
     @FXML
     void handleButtonOK(ActionEvent event) throws IOException, SQLException {
+    	Connection c=verbindungAufmachen();
+    	listeDerEinwohnerproPlz=erzeugePlzListe(c);
 		plzOderOrtDatenAusdruecken();
     }
     
@@ -91,6 +91,7 @@ public class PlzEinwohnerController{
 		for(int i=0;i<listeDerEinwohnerproPlz.size();i++) {
 			if(listeDerEinwohnerproPlz.get(i).plz.equals(tfPLZOrt.getText())) {
 				zugehoerigeEintraegeAusdruckenUndBevoelkuerungUndFlaecheAddieren(i);
+				labelPlzOrt.setText(listeDerEinwohnerproPlz.get(i).ort);
 			}else {
 				continue;
 			}
@@ -104,6 +105,7 @@ public class PlzEinwohnerController{
 				continue;
 			}
 		}
+		labelPlzOrt.setText(tfPLZOrt.getText());
 	}
 	
 	private void zugehoerigeEintraegeAusdruckenUndBevoelkuerungUndFlaecheAddieren(int i) {
@@ -170,15 +172,15 @@ public class PlzEinwohnerController{
 
     
 	
-public static void showDialog() throws IOException {
-    	
+public static void showDialog() throws IOException, SQLException {
+		
    	 	Stage stage = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("plz_einwohner.fxml"));
         Parent parent = fxmlLoader.load();
         
         PlzEinwohnerController ctrl=fxmlLoader.getController();
-       
+        
         ctrl=fxmlLoader.getController();
         
         ctrl.setStage(stage);

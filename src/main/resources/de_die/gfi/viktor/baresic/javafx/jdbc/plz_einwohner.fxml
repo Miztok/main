@@ -17,7 +17,6 @@
       <CheckBox fx:id="checkBoxPLZAnzeigen" layoutX="354.0" layoutY="78.0" mnemonicParsing="false" text="PLZ anzeigen" />
       <Button fx:id="buttonOK" layoutX="202.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonOK" text="OK" />
       <Button fx:id="buttonClose" layoutX="549.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonClose" text="Schliessen" />
-      <Button fx:id="buttonGetTable" layoutX="341.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleButtonGetTable" text="Tabelle einfügen" />
       <TextField fx:id="tfPLZOrt" layoutX="326.0" layoutY="188.0" />
       <Label layoutX="45.0" layoutY="252.0" text="Bevölkerung:" />
       <Label fx:id="labelBevoelkerung" layoutX="186.0" layoutY="252.0" text="Label" />
@@ -26,5 +25,8 @@
       <Label layoutX="513.0" layoutY="252.0" text="Bevölkerungsdichte:" />
       <Label fx:id="labelFlaeche" layoutX="340.0" layoutY="252.0" text="Label" />
       <Label fx:id="labelBevoelkerungsdichte" layoutX="641.0" layoutY="252.0" text="Label" />
+      <Label layoutX="148.0" layoutY="192.0" text="PLZ- oder Orteinträge suchen:" />
+      <Label layoutX="525.0" layoutY="192.0" text="Ort der Postleitzahl:" />
+      <Label fx:id="labelPlzOrt" layoutX="655.0" layoutY="192.0" text="Label" />
    </children>
 </AnchorPane>
