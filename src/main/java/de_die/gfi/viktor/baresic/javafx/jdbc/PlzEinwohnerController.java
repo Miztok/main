@@ -125,25 +125,24 @@ public class PlzEinwohnerController {
 
 	private String ungueltigeAngabenAnzeigen(boolean plzGueltig, boolean ortGueltig, boolean einwohnerZahlGueltig,
 			boolean flaecheGueltig) {
-		String ungueltigeEingaben="Sie haben folgendes ungültig eingegeben:";
-		if(!plzGueltig&&!ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ, Ort, Einwohnerzahl und Fläche.";}else if(!plzGueltig&&!ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ, Ort, und Fläche.";}else if(!plzGueltig&&!ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ, Ort, und Einwohnerzahl.";}else if(!plzGueltig&&ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ, Einwohnerzahl und Fläche.";}else if(plzGueltig&&!ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" Ort, Einwohnerzahl und Fläche.";}else if(plzGueltig&&ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" Einwohnerzahl und Fläche.";}else if(plzGueltig&&!ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" Einwohnerzahl und Ort.";}else if(plzGueltig&&!ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" Ort und Fläche.";}else if(!plzGueltig&&ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ und Fläche.";}else if(!plzGueltig&&!ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ und Ort.";}else if(!plzGueltig&&ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ und Ort.";}else if(!plzGueltig&&ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" PLZ.";}else if(plzGueltig&&!ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" Ort.";}else if(plzGueltig&&ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" Fläche.";}else if(plzGueltig&&ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
-			ungueltigeEingaben+=" Fläche.";}
+		String ungueltigeEingaben = "Sie haben folgendes ungültig eingegeben: ";
+
+		if (!plzGueltig) {
+			ungueltigeEingaben += "PLZ, ";
+		}
+		if (!ortGueltig) {
+			ungueltigeEingaben += "Ort, ";
+		}
+		if (!flaecheGueltig) {
+			ungueltigeEingaben += "Fläche, ";
+		}
+		if (!einwohnerZahlGueltig) {
+			ungueltigeEingaben += "Einwohnerzahl, ";
+		}
+
+		ungueltigeEingaben = ungueltigeEingaben.substring(0, ungueltigeEingaben.length()-2); // Entfernen des letzten Kommas
 		
-			ungueltigeEingaben+=" Bitte geben Sie diese Eingaben (auch) richtig ein.";
+		ungueltigeEingaben += ". Bitte geben Sie diese Eingaben (auch) richtig ein.";
 		return ungueltigeEingaben;
 	}
 
