@@ -3,6 +3,7 @@ package de_die.gfi.viktor.baresic.javafx.jdbc;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,6 +30,8 @@ import javafx.stage.Stage;
 
 public class PlzEinwohnerController {
 	static List<PlzEinwohnerEintrag> listeDerEinwohnerproPlz = new ArrayList<>();
+	static List<PlzEinwohnerEintrag> listeDerZuLoeschendenEintraegen = new ArrayList<>();
+	static List<PlzEinwohnerEintrag> listeDerZuHinzufuegendenEintraegen = new ArrayList<>();
 
 	int bevoelkerungAnOrtOderPlz = 0;
 
@@ -86,6 +89,7 @@ public class PlzEinwohnerController {
 			PlzEinwohnerEintrag einNeuerEintrag=new PlzEinwohnerEintrag(tfOrtEintragHinzufuegung.getText(),tfPlzEintragHinzufuegung.getText(),
 					tfEinwohnerEintragHinzufuegung.getText(),tfFlaechenEintragHinzufuegung.getText());
 			listeDerEinwohnerproPlz.add(einNeuerEintrag);
+			listeDerZuHinzufuegendenEintraegen.add(einNeuerEintrag);
 		}else {
 			Alert a = new Alert(AlertType.WARNING);
 			a.setContentText(ungueltigeAngabenAnzeigen(plzGueltig,ortGueltig,einwohnerZahlGueltig,flaecheGueltig));
@@ -125,6 +129,7 @@ public class PlzEinwohnerController {
 		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
 			if (listeDerEinwohnerproPlz.get(i).ort.equals(zuLoeschendeEintragOrt)
 					&& listeDerEinwohnerproPlz.get(i).plz.equals(zuLoeschendeEintragPlz)) {
+				listeDerZuLoeschendenEintraegen.add(listeDerEinwohnerproPlz.get(i));
 				listeDerEinwohnerproPlz.remove(i);
 			}
 		}
@@ -159,7 +164,34 @@ public class PlzEinwohnerController {
 	private TableColumn<PlzEinwohnerEintrag, String> tbcQuadratkilometer;
 
 	@FXML
-	void handleButtonClose(ActionEvent event) {
+	void handleButtonClose(ActionEvent event) throws SQLException {
+		Connection c = verbindungAufmachen();
+		Statement stmt = c.createStatement();
+		int spaltenAnzahl=0;
+		ResultSet rs=stmt.executeQuery("SELECT * FROM plz_einwohner");
+		while(rs.next()) {
+			spaltenAnzahl++;
+		}
+		for(int i=0;i<listeDerZuLoeschendenEintraegen.size();i++) {
+			PreparedStatement pstmt1=c.prepareStatement("DELETE * FROM plz_einwohner WHERE plz LIKE ?,"
+					+ " ort LIKE ?, einwohner LIKE ?, quadratkilometer LIKE ?");
+			pstmt1.setString(1, "%"+listeDerZuLoeschendenEintraegen.get(i).plz+"%");
+			pstmt1.setString(2, "%"+listeDerZuLoeschendenEintraegen.get(i).ort+"%");
+			pstmt1.setString(3, "%"+listeDerZuLoeschendenEintraegen.get(i).einwohner+"%");
+			pstmt1.setString(4, "%"+listeDerZuLoeschendenEintraegen.get(i).quadratkilometer+"%");
+			for(int j=0;j<spaltenAnzahl;j++) {
+				ResultSet rs5=pstmt1.executeQuery();
+			}
+		}
+		PreparedStatement pstmt2=c.prepareStatement("INSERT INTO plz_einwohner(plz varchar(50), ort varchar(500),"
+				+ " einwohner varchar(150), quadratkilometer varchar(400)) VALUES (?, ?, ? , ?)");
+		for (int k=0;k<listeDerZuHinzufuegendenEintraegen.size();k++) {
+			pstmt2.setString(1, listeDerZuHinzufuegendenEintraegen.get(k).plz);
+			pstmt2.setString(2, listeDerZuHinzufuegendenEintraegen.get(k).ort);
+			pstmt2.setString(2, listeDerZuHinzufuegendenEintraegen.get(k).einwohner);
+			pstmt2.setString(2, listeDerZuHinzufuegendenEintraegen.get(k).quadratkilometer);
+			ResultSet rs3=pstmt2.executeQuery();
+		}
 		stage.close();
 	}
 
