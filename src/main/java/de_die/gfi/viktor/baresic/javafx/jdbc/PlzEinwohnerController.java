@@ -107,24 +107,28 @@ public class PlzEinwohnerController {
 
 	@FXML
 	void handleButtonEintragHinzufuegen(ActionEvent event) {
-		boolean plzGueltig=untersuchenObNachOrtOderPlzEintraegengesucht(tfPlzEintragHinzufuegung.getText());
-		boolean ortGueltig=untersucheObOrtNameGueltig(tfOrtEintragHinzufuegung.getText());
-		boolean flaecheGueltig=untersucheObFlaecheEintragGueltig(tfFlaechenEintragHinzufuegung.getText());
-		boolean einwohnerZahlGueltig=untersuchenObEinwohnerzahlEingabeGueltigIst(tfEinwohnerEintragHinzufuegung.getText());
-		if(plzGueltig&&ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
-			PlzEinwohnerEintrag einNeuerEintrag=new PlzEinwohnerEintrag(tfOrtEintragHinzufuegung.getText(),tfPlzEintragHinzufuegung.getText(),
-					tfEinwohnerEintragHinzufuegung.getText(),tfFlaechenEintragHinzufuegung.getText());
+		boolean plzGueltig = untersuchenObNachOrtOderPlzEintraegengesucht(tfPlzEintragHinzufuegung.getText());
+		boolean ortGueltig = untersucheObOrtNameGueltig(tfOrtEintragHinzufuegung.getText());
+		boolean flaecheGueltig = untersucheObFlaecheEintragGueltig(tfFlaechenEintragHinzufuegung.getText());
+		boolean einwohnerZahlGueltig = untersuchenObEinwohnerzahlEingabeGueltigIst(
+				tfEinwohnerEintragHinzufuegung.getText());
+		if (plzGueltig && ortGueltig && flaecheGueltig && einwohnerZahlGueltig) {
+			PlzEinwohnerEintrag einNeuerEintrag = new PlzEinwohnerEintrag(tfOrtEintragHinzufuegung.getText(),
+					tfPlzEintragHinzufuegung.getText(), tfEinwohnerEintragHinzufuegung.getText(),
+					tfFlaechenEintragHinzufuegung.getText());
 			listeDerEinwohnerproPlz.add(einNeuerEintrag);
 			listeDerZuHinzufuegendenEintraegen.add(einNeuerEintrag);
-		}else {
-			Alert a = new Alert(AlertType.WARNING);
-			a.setContentText(ungueltigeAngabenAnzeigen(plzGueltig,ortGueltig,einwohnerZahlGueltig,flaecheGueltig));
-			a.showAndWait();
+		} else {
+			
+			ungueltigeAngabenAnzeigen(plzGueltig, ortGueltig, einwohnerZahlGueltig, flaecheGueltig);
+			
 		}
 	}
 
-	private String ungueltigeAngabenAnzeigen(boolean plzGueltig, boolean ortGueltig, boolean einwohnerZahlGueltig,
+	private void ungueltigeAngabenAnzeigen(boolean plzGueltig, boolean ortGueltig, boolean einwohnerZahlGueltig,
 			boolean flaecheGueltig) {
+		Alert a = new Alert(AlertType.WARNING);
+		
 		String ungueltigeEingaben = "Sie haben folgendes ungültig eingegeben: ";
 
 		if (!plzGueltig) {
@@ -143,7 +147,8 @@ public class PlzEinwohnerController {
 		ungueltigeEingaben = ungueltigeEingaben.substring(0, ungueltigeEingaben.length()-2); // Entfernen des letzten Kommas
 		
 		ungueltigeEingaben += ". Bitte geben Sie diese Eingaben (auch) richtig ein.";
-		return ungueltigeEingaben;
+		a.setContentText(ungueltigeEingaben);
+		a.showAndWait();
 	}
 
 	@FXML
