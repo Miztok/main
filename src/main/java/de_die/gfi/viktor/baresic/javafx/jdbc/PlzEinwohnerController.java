@@ -173,8 +173,7 @@ public class PlzEinwohnerController {
 			spaltenAnzahl++;
 		}
 		for(int i=0;i<listeDerZuLoeschendenEintraegen.size();i++) {
-			PreparedStatement pstmt1=c.prepareStatement("DELETE * FROM plz_einwohner WHERE plz LIKE ?,"
-					+ " ort LIKE ?, einwohner LIKE ?, quadratkilometer LIKE ?");
+			PreparedStatement pstmt1=c.prepareStatement(" DELETE * FROM plz_einwohner WHERE plz LIKE ?, ort LIKE ?, einwohner LIKE ?, quadratkilometer LIKE ?");
 			pstmt1.setString(1, "%"+listeDerZuLoeschendenEintraegen.get(i).plz+"%");
 			pstmt1.setString(2, "%"+listeDerZuLoeschendenEintraegen.get(i).ort+"%");
 			pstmt1.setString(3, "%"+listeDerZuLoeschendenEintraegen.get(i).einwohner+"%");
@@ -183,13 +182,12 @@ public class PlzEinwohnerController {
 				ResultSet rs5=pstmt1.executeQuery();
 			}
 		}
-		PreparedStatement pstmt2=c.prepareStatement("INSERT INTO plz_einwohner(plz varchar(50), ort varchar(500),"
-				+ " einwohner varchar(150), quadratkilometer varchar(400)) VALUES (?, ?, ? , ?)");
+		PreparedStatement pstmt2=c.prepareStatement("INSERT INTO plz_einwohner ( plz , ort , einwohner , quadratkilometer ) VALUES ( ?, ?, ? , ?)");
 		for (int k=0;k<listeDerZuHinzufuegendenEintraegen.size();k++) {
 			pstmt2.setString(1, listeDerZuHinzufuegendenEintraegen.get(k).plz);
 			pstmt2.setString(2, listeDerZuHinzufuegendenEintraegen.get(k).ort);
-			pstmt2.setString(2, listeDerZuHinzufuegendenEintraegen.get(k).einwohner);
-			pstmt2.setString(2, listeDerZuHinzufuegendenEintraegen.get(k).quadratkilometer);
+			pstmt2.setString(3, listeDerZuHinzufuegendenEintraegen.get(k).einwohner);
+			pstmt2.setString(4, listeDerZuHinzufuegendenEintraegen.get(k).quadratkilometer);
 			ResultSet rs3=pstmt2.executeQuery();
 		}
 		stage.close();
