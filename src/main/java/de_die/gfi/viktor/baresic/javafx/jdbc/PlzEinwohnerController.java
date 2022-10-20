@@ -74,10 +74,36 @@ public class PlzEinwohnerController {
 	@FXML
     private Button buttonTerminate;
 	
+	
 	@FXML
-    void handleButtonTerminate(ActionEvent event) {
-		stage.close();
-    }
+	private Label labelBevoelkerung;
+
+	@FXML
+	private Label labelBevoelkerungsdichte;
+
+	@FXML
+	private Label labelFlaeche;
+
+	@FXML
+	private Label labelPlzOrt;
+
+	@FXML
+	private TableView<PlzEinwohnerEintrag> tableviewPlzOrtEinwohnerFlaeche;
+
+	@FXML
+	private TableColumn<PlzEinwohnerEintrag, String> tbcEinwohner;
+
+	@FXML
+	private TableColumn<PlzEinwohnerEintrag, String> tbcOrt;
+
+	@FXML
+	private TableColumn<PlzEinwohnerEintrag, String> tbcPlz;
+
+	@FXML
+	private TableColumn<PlzEinwohnerEintrag, String> tbcQuadratkilometer;
+	
+	
+
 
 	@FXML
 	void handleButtonEintragHinzufuegen(ActionEvent event) {
@@ -137,34 +163,20 @@ public class PlzEinwohnerController {
 	}
 
 	@FXML
-	private Label labelBevoelkerung;
-
-	@FXML
-	private Label labelBevoelkerungsdichte;
-
-	@FXML
-	private Label labelFlaeche;
-
-	@FXML
-	private Label labelPlzOrt;
-
-	@FXML
-	private TableView<PlzEinwohnerEintrag> tableviewPlzOrtEinwohnerFlaeche;
-
-	@FXML
-	private TableColumn<PlzEinwohnerEintrag, String> tbcEinwohner;
-
-	@FXML
-	private TableColumn<PlzEinwohnerEintrag, String> tbcOrt;
-
-	@FXML
-	private TableColumn<PlzEinwohnerEintrag, String> tbcPlz;
-
-	@FXML
-	private TableColumn<PlzEinwohnerEintrag, String> tbcQuadratkilometer;
+    void handleButtonTerminate(ActionEvent event) {
+		
+		stage.close();
+    }
 
 	@FXML
 	void handleButtonClose(ActionEvent event) throws SQLException {
+		
+		veraenderungenInDieDatenbankEintragen();
+		
+		stage.close();
+	}
+
+	private void veraenderungenInDieDatenbankEintragen() throws SQLException {
 		Connection c = verbindungAufmachen();
 		Statement stmt = c.createStatement();
 		int spaltenAnzahl=0;
@@ -190,7 +202,6 @@ public class PlzEinwohnerController {
 			pstmt2.setString(4, listeDerZuHinzufuegendenEintraegen.get(k).quadratkilometer);
 			ResultSet rs3=pstmt2.executeQuery();
 		}
-		stage.close();
 	}
 
 	@FXML
