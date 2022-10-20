@@ -173,11 +173,11 @@ public class PlzEinwohnerController {
 			spaltenAnzahl++;
 		}
 		for(int i=0;i<listeDerZuLoeschendenEintraegen.size();i++) {
-			PreparedStatement pstmt1=c.prepareStatement(" DELETE * FROM plz_einwohner WHERE plz LIKE ?, ort LIKE ?, einwohner LIKE ?, quadratkilometer LIKE ?");
-			pstmt1.setString(1, "%"+listeDerZuLoeschendenEintraegen.get(i).plz+"%");
-			pstmt1.setString(2, "%"+listeDerZuLoeschendenEintraegen.get(i).ort+"%");
-			pstmt1.setString(3, "%"+listeDerZuLoeschendenEintraegen.get(i).einwohner+"%");
-			pstmt1.setString(4, "%"+listeDerZuLoeschendenEintraegen.get(i).quadratkilometer+"%");
+			PreparedStatement pstmt1=c.prepareStatement(" DELETE FROM plz_einwohner WHERE plz=? AND ort=? AND einwohner=? AND quadratkilometer=?");
+			pstmt1.setString(1, listeDerZuLoeschendenEintraegen.get(i).plz);
+			pstmt1.setString(2, listeDerZuLoeschendenEintraegen.get(i).ort);
+			pstmt1.setString(3, listeDerZuLoeschendenEintraegen.get(i).einwohner);
+			pstmt1.setString(4, listeDerZuLoeschendenEintraegen.get(i).quadratkilometer);
 			for(int j=0;j<spaltenAnzahl;j++) {
 				ResultSet rs5=pstmt1.executeQuery();
 			}
