@@ -268,36 +268,27 @@ public class PlzEinwohnerController {
 			return false;
 		}
 		try {
-			try {
 			if (einwohnerZahlEingabe.length() == 10) {
 				return Long.valueOf(einwohnerZahlEingabe) <= 2147483647 && Long.valueOf(einwohnerZahlEingabe) > 0;
 			} else if (einwohnerZahlEingabe.length() < 10 && einwohnerZahlEingabe.length() > 0) {
 				return Long.valueOf(einwohnerZahlEingabe) > 0;
 			}
-
-		} catch (InputMismatchException e) {
+		} catch (InputMismatchException | NumberFormatException ne) {
 			return false;
 		}
-		}catch(NumberFormatException ne) {
-			return false;
-		}
-		
 		return false;
 	}
 
 	private boolean untersucheObFlaecheEintragGueltig(String flaecheEintrag) {
 		try {
-			try {
+
 			double zahl = Double.valueOf(flaecheEintrag);
 			return (zahl > 0.0001 && zahl < 100000);
 
-		} catch (InputMismatchException e) {
+		} catch (InputMismatchException | NumberFormatException ne) {
 			return false;
 		}
-		}catch(NumberFormatException ne) {
-			return false;
-		}
-		
+
 	}
 
 	private boolean untersucheObOrtNameGueltig(String ortName) {
