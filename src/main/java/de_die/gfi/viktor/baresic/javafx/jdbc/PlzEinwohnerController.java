@@ -252,6 +252,9 @@ public class PlzEinwohnerController {
 	}
 
 	private boolean untersucheObOrtNameGueltig(String ortName) {
+		if(ortName.length()==0) {
+			return false;
+		}
 		int zaehlerOrtnameAbschnitt = 0;
 
 		for (int i = 0; i < ortName.length(); i++) {
