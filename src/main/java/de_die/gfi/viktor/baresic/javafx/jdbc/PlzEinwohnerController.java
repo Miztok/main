@@ -67,6 +67,14 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private Button buttonEintragLoeschen;
+	
+	@FXML
+    private Button buttonTerminate;
+	
+	@FXML
+    void handleButtonTerminate(ActionEvent event) {
+		stage.close();
+    }
 
 	@FXML
 	void handleButtonEintragHinzufuegen(ActionEvent event) {
