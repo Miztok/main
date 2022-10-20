@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -16,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -37,19 +40,19 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private TextField tfPLZOrt;
-	
+
 	@FXML
-    private TextField tfEinwohnerEintragHinzufuegung;
+	private TextField tfEinwohnerEintragHinzufuegung;
 
-    @FXML
-    private TextField tfFlaechenEintragHinzufuegung;
+	@FXML
+	private TextField tfFlaechenEintragHinzufuegung;
 
-    @FXML
-    private TextField tfOrtEintragHinzufuegung;
-    
-    @FXML
-    private TextField tfPlzEintragHinzufuegung;
-    
+	@FXML
+	private TextField tfOrtEintragHinzufuegung;
+
+	@FXML
+	private TextField tfPlzEintragHinzufuegung;
+
 	@FXML
 	private Button buttonClose;
 
@@ -58,22 +61,67 @@ public class PlzEinwohnerController {
 
 	@FXML
 	private Button buttonShowWholeTable;
-	
+
 	@FXML
-    private Button buttonEintragHinzufuegen;
+	private Button buttonEintragHinzufuegen;
 
-    @FXML
-    private Button buttonEintragLoeschen;
-    
-    @FXML
-    void handleButtonEintragHinzufuegen(ActionEvent event) {
+	@FXML
+	private Button buttonEintragLoeschen;
 
-    }
+	@FXML
+	void handleButtonEintragHinzufuegen(ActionEvent event) {
+		boolean plzGueltig=untersuchenObNachOrtOderPlzEintraegengesucht(tfPlzEintragHinzufuegung.getText());
+		boolean ortGueltig=untersucheObOrtNameGueltig(tfOrtEintragHinzufuegung.getText());
+		boolean flaecheGueltig=untersucheObFlaecheEintragGueltig(tfFlaechenEintragHinzufuegung.getText());
+		boolean einwohnerZahlGueltig=untersuchenObEinwohnerzahlEingabeGueltigIst(tfEinwohnerEintragHinzufuegung.getText());
+		if(plzGueltig&&ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
+			PlzEinwohnerEintrag einNeuerEintrag=new PlzEinwohnerEintrag(tfOrtEintragHinzufuegung.getText(),tfPlzEintragHinzufuegung.getText(),
+					tfEinwohnerEintragHinzufuegung.getText(),tfFlaechenEintragHinzufuegung.getText());
+			listeDerEinwohnerproPlz.add(einNeuerEintrag);
+		}else {
+			Alert a = new Alert(AlertType.WARNING);
+			a.setContentText(ungueltigeAngabenAnzeigen(plzGueltig,ortGueltig,einwohnerZahlGueltig,flaecheGueltig));
+			a.showAndWait();
+		}
+	}
 
-    @FXML
-    void handleButtonEintragLoeschen(ActionEvent event) {
+	private String ungueltigeAngabenAnzeigen(boolean plzGueltig, boolean ortGueltig, boolean einwohnerZahlGueltig,
+			boolean flaecheGueltig) {
+		String ungueltigeEingaben="Sie haben folgendes ungültig eingegeben:";
+		if(!plzGueltig&&!ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ, Ort, Einwohnerzahl und Fläche.";}else if(!plzGueltig&&!ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ, Ort, und Fläche.";}else if(!plzGueltig&&!ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ, Ort, und Einwohnerzahl.";}else if(!plzGueltig&&ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ, Einwohnerzahl und Fläche.";}else if(plzGueltig&&!ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" Ort, Einwohnerzahl und Fläche.";}else if(plzGueltig&&ortGueltig&&!flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" Einwohnerzahl und Fläche.";}else if(plzGueltig&&!ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" Einwohnerzahl und Ort.";}else if(plzGueltig&&!ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" Ort und Fläche.";}else if(!plzGueltig&&ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ und Fläche.";}else if(!plzGueltig&&!ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ und Ort.";}else if(!plzGueltig&&ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ und Ort.";}else if(!plzGueltig&&ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" PLZ.";}else if(plzGueltig&&!ortGueltig&&flaecheGueltig&&einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" Ort.";}else if(plzGueltig&&ortGueltig&&!flaecheGueltig&&einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" Fläche.";}else if(plzGueltig&&ortGueltig&&flaecheGueltig&&!einwohnerZahlGueltig) {
+			ungueltigeEingaben+=" Fläche.";}
+		
+			ungueltigeEingaben+=" Bitte geben Sie diese Eingaben (auch) richtig ein.";
+		return ungueltigeEingaben;
+	}
 
-    }
+	@FXML
+	void handleButtonEintragLoeschen(ActionEvent event) {
+		int ausgewaehlteReihe = tableviewPlzOrtEinwohnerFlaeche.getSelectionModel().getSelectedIndex();
+		String zuLoeschendeEintragOrt = tbcOrt.getCellData(ausgewaehlteReihe);
+		String zuLoeschendeEintragPlz = tbcPlz.getCellData(ausgewaehlteReihe);
+		for (int i = 0; i < listeDerEinwohnerproPlz.size(); i++) {
+			if (listeDerEinwohnerproPlz.get(i).ort.equals(zuLoeschendeEintragOrt)
+					&& listeDerEinwohnerproPlz.get(i).plz.equals(zuLoeschendeEintragPlz)) {
+				listeDerEinwohnerproPlz.remove(i);
+			}
+		}
+
+	}
 
 	@FXML
 	private Label labelBevoelkerung;
@@ -155,11 +203,78 @@ public class PlzEinwohnerController {
 	}
 
 	private boolean untersuchenObNachOrtOderPlzEintraegengesucht(String sucheZeichenAbfolge) {
+		if (sucheZeichenAbfolge.length() > 5 || sucheZeichenAbfolge.length() < 5) {
+			return false;
+		}
 		for (int i = 0; i < 5; i++) {
-			if (sucheZeichenAbfolge.charAt(i) > 47 && sucheZeichenAbfolge.charAt(i) < 58) {
-				continue;
-			} else {
+			if (!Character.isDigit(sucheZeichenAbfolge.charAt(i))) {
 				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean untersuchenObEinwohnerzahlEingabeGueltigIst(String einwohnerZahlEingabe) {
+		if (einwohnerZahlEingabe.length() > 10) {
+			return false;
+		}
+		try {
+			try {
+			if (einwohnerZahlEingabe.length() == 10) {
+				return Long.valueOf(einwohnerZahlEingabe) <= 2147483647 && Long.valueOf(einwohnerZahlEingabe) > 0;
+			} else if (einwohnerZahlEingabe.length() < 10 && einwohnerZahlEingabe.length() > 0) {
+				return Long.valueOf(einwohnerZahlEingabe) > 0;
+			}
+
+		} catch (InputMismatchException e) {
+			return false;
+		}
+		}catch(NumberFormatException ne) {
+			return false;
+		}
+		
+		return false;
+	}
+
+	private boolean untersucheObFlaecheEintragGueltig(String flaecheEintrag) {
+		try {
+			try {
+			double zahl = Double.valueOf(flaecheEintrag);
+			return (zahl > 0.0001 && zahl < 100000);
+
+		} catch (InputMismatchException e) {
+			return false;
+		}
+		}catch(NumberFormatException ne) {
+			return false;
+		}
+		
+	}
+
+	private boolean untersucheObOrtNameGueltig(String ortName) {
+		int zaehlerOrtnameAbschnitt = 0;
+
+		for (int i = 0; i < ortName.length(); i++) {
+			char theChar = ortName.charAt(i);
+			if (zaehlerOrtnameAbschnitt == 0) {
+				if (!Character.isUpperCase(theChar)) {
+					return false; // Fehler
+				}
+				zaehlerOrtnameAbschnitt++;
+			} else {
+				if (theChar == ' ' || theChar == '-') {
+					zaehlerOrtnameAbschnitt = 0;
+				} else if (theChar == ',') {
+					if (ortName.charAt(i + 1) == ' ' || ortName.charAt(i + 1) == '-') {
+						continue;
+					}
+					zaehlerOrtnameAbschnitt = 0;
+
+				} else if (Character.isLowerCase(theChar)) {
+					zaehlerOrtnameAbschnitt++;
+				} else {
+					return false;
+				}
 			}
 		}
 		return true;
