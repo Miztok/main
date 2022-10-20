@@ -112,6 +112,7 @@ public class PlzEinwohnerController {
 		boolean flaecheGueltig = untersucheObFlaecheEintragGueltig(tfFlaechenEintragHinzufuegung.getText());
 		boolean einwohnerZahlGueltig = untersuchenObEinwohnerzahlEingabeGueltigIst(
 				tfEinwohnerEintragHinzufuegung.getText());
+
 		if (plzGueltig && ortGueltig && flaecheGueltig && einwohnerZahlGueltig) {
 			PlzEinwohnerEintrag einNeuerEintrag = new PlzEinwohnerEintrag(tfOrtEintragHinzufuegung.getText(),
 					tfPlzEintragHinzufuegung.getText(), tfEinwohnerEintragHinzufuegung.getText(),
@@ -183,20 +184,15 @@ public class PlzEinwohnerController {
 	private void veraenderungenInDieDatenbankEintragen() throws SQLException {
 		Connection c = verbindungAufmachen();
 		Statement stmt = c.createStatement();
-		int spaltenAnzahl=0;
-		ResultSet rs=stmt.executeQuery("SELECT * FROM plz_einwohner");
-		while(rs.next()) {
-			spaltenAnzahl++;
-		}
+
+		
 		for(int i=0;i<listeDerZuLoeschendenEintraegen.size();i++) {
 			PreparedStatement pstmt1=c.prepareStatement(" DELETE FROM plz_einwohner WHERE plz=? AND ort=? AND einwohner=? AND quadratkilometer=?");
 			pstmt1.setString(1, listeDerZuLoeschendenEintraegen.get(i).plz);
 			pstmt1.setString(2, listeDerZuLoeschendenEintraegen.get(i).ort);
 			pstmt1.setString(3, listeDerZuLoeschendenEintraegen.get(i).einwohner);
 			pstmt1.setString(4, listeDerZuLoeschendenEintraegen.get(i).quadratkilometer);
-			for(int j=0;j<spaltenAnzahl;j++) {
-				ResultSet rs5=pstmt1.executeQuery();
-			}
+			ResultSet rs5=pstmt1.executeQuery();
 		}
 		PreparedStatement pstmt2=c.prepareStatement("INSERT INTO plz_einwohner ( plz , ort , einwohner , quadratkilometer ) VALUES ( ?, ?, ? , ?)");
 		for (int k=0;k<listeDerZuHinzufuegendenEintraegen.size();k++) {
